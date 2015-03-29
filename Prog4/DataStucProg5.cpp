@@ -2,7 +2,7 @@
 * CS 4343: Program 5
 * AUTHOR: NATHAN LEA
 * CLASS:  DATA STRUCTURES
-* DATE:   April 1 2015
+* DATE:   April 8 2015
 *
 * PROGRAM: Tree
 *
@@ -37,16 +37,8 @@ void makeTree(string input, expTree* tree) {
 				currentLeaf->num = true;
 				currentLeaf->setNumber(currentChar-48);
 			}
-			//48 - 57
-			//its a number
-			//put the number in the child position
-			//cout << currentChar << endl;
 		}
 		else {
-			//check and see if supported operation
-			//put in parent position
-			//
-			//cout << currentChar << endl;
 			if (currentChar == '(') {
 				currentLeaf->newLeftChild();
 				currentLeaf = currentLeaf->getLeftChild();
@@ -71,24 +63,15 @@ void makeTree(string input, expTree* tree) {
 }
 void postfix(expTree* tree, queue<int>* posFixQ) {
 	if (!tree->hasLeft && !tree->hasRight) {
-		if (tree->num) {
-			posFixQ->push(tree->getNumber());
-		}
-		else {
-			posFixQ->push(INT_MIN + tree->getValue());
-		}		
+		if (tree->num) { posFixQ->push(tree->getNumber());	}
+		else {	posFixQ->push(INT_MIN + tree->getValue());	}		
 		//cout << tree->getValue()<< " ";
 		return;
 	}
 	postfix(tree->getLeftChild(), posFixQ);
 	postfix(tree->getRightChild(), posFixQ);
-	if (tree->num) {
-		posFixQ->push(tree->getNumber());
-	}
-	else {
-		posFixQ->push(INT_MIN + tree->getValue());
-	}
-	//cout << tree->getValue() << " ";
+	if (tree->num) { posFixQ->push(tree->getNumber());	}
+	else {	posFixQ->push(INT_MIN + tree->getValue());	}
 }
 
 int evaulate(queue<int>* Q) {
@@ -114,12 +97,12 @@ int evaulate(queue<int>* Q) {
 	return S->top();
 }
 
-int calculate(int a, int b, char q) {
+int calculate(int b, int a, char q) {
 	if (q == '+'){		return a + b; }
-	else if (q == '-') {return b - a; }
+	else if (q == '-') {return a - b; }
 	else if (q == '*'){ return a * b; }
-	else if (q == '/'){ return b / a; }
-	else {	cout << "HELP!" << endl;  }
+	else if (q == '/'){ return a / b; }
+	else {  }
 	return -1;
 }
 
@@ -136,10 +119,6 @@ int main() {
 	postfix(a, Q);
 	int result = evaulate(Q);
 	cout << result <<endl;
-	//make into tree
-	//postfix 
-	//evaluate expression
-
 #ifdef _WIN32
 	system("pause");
 #endif
