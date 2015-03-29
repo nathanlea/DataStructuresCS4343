@@ -15,6 +15,7 @@
 #include <regex>
 #include <queue>
 #include <stack>
+#include <climits>
 #include "ExpTree.h"
 using namespace std;
 
@@ -28,7 +29,14 @@ void makeTree(string input, expTree* tree) {
 	for (int i = 0; i < input.size(); i++) {
 		char currentChar = input.at(i);
 		if (currentChar >= 48 && currentChar <= 57) {
-			currentLeaf->setValue(currentChar);
+			if (currentLeaf->num) {
+				int a = currentLeaf->getNumber();
+				currentLeaf->setNumber(a * 10 + (currentChar - 48));
+			}
+			else { //default normal case
+				currentLeaf->num = true;
+				currentLeaf->setNumber(currentChar-48);
+			}
 			//48 - 57
 			//its a number
 			//put the number in the child position
@@ -61,26 +69,37 @@ void makeTree(string input, expTree* tree) {
 	tree = currentLeaf;
 
 }
-void postfix(expTree* tree, queue<char>* posFixQ) {
+void postfix(expTree* tree, queue<int>* posFixQ) {
 	if (!tree->hasLeft && !tree->hasRight) {
-		posFixQ->push(tree->getValue());
-		cout << tree->getValue()<< " ";
+		if (tree->num) {
+			posFixQ->push(tree->getNumber());
+		}
+		else {
+			posFixQ->push(INT_MIN + tree->getValue());
+		}		
+		//cout << tree->getValue()<< " ";
 		return;
 	}
 	postfix(tree->getLeftChild(), posFixQ);
 	postfix(tree->getRightChild(), posFixQ);
-	posFixQ->push(tree->getValue());
-	cout << tree->getValue() << " ";
+	if (tree->num) {
+		posFixQ->push(tree->getNumber());
+	}
+	else {
+		posFixQ->push(INT_MIN + tree->getValue());
+	}
+	//cout << tree->getValue() << " ";
 }
 
-int evaulate(queue<char>* Q) {
+int evaulate(queue<int>* Q) {
 	int result = 0;
 	stack<int>* S = new stack<int>;
 	int size = Q->size();
 	for (int i = 0; i < size; i++) {
-		char q = Q->front();
+		int q = Q->front();
 		Q->pop();
-		if (q == '+' || q == '-' || q == '*' || q == '/') {
+		int q1 = q - INT_MIN;
+		if (q1 == '+' || q1 == '-' || q1 == '*' || q1 == '/') {
 			int a = S->top();
 			S->pop();
 			int b = S->top();
@@ -89,7 +108,7 @@ int evaulate(queue<char>* Q) {
 			S->push(result);
 		}
 		else {
-			S->push(q-48);
+			S->push(q);
 		}
 	}
 	return S->top();
@@ -109,10 +128,11 @@ int main() {
 	//get expression
 	expTree* a = new expTree;
 	char str[] = "( ( 5 + ( ( 1 + 2 ) * 4 ) ) - 3 )";
-	char str1[] = "(((((2 * 2) / 2) + 5) * 6) + 6)";
-	auto input = regex_replace(str1, std::regex("\\s"), "");
+	char str1[] = "(((((12 * 2) / 2) + 15) * 6) + 66)";
+	char str2 [] = "(((((122 * 2) / 2) + 15) * 6) + 66)";
+	auto input = regex_replace(str2, std::regex("\\s"), "");
 	makeTree(input, a);
-	queue<char>* Q = new queue<char>;
+	queue<int>* Q = new queue<int>;
 	postfix(a, Q);
 	int result = evaulate(Q);
 	cout << result <<endl;

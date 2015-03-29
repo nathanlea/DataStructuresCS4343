@@ -29,7 +29,13 @@ void expTree::getParent(expTree* par) {
 expTree* expTree::getParent() {
 	return parent;
 }
-void expTree::setValue(char input){
+void expTree::setNumber(int input) {
+	number = input;
+}
+int expTree::getNumber(){
+	return number;
+}
+void expTree::setValue(char input) {
 	value = input;
 }
 char expTree::getValue(){
