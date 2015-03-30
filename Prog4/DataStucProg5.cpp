@@ -12,7 +12,7 @@
 ************************************************************/
 #include <stdlib.h>
 #include <iostream>
-#include <regex>
+//#include <regex>
 #include <queue>
 #include <stack>
 #include <climits>
@@ -38,7 +38,7 @@ void makeTree(string input, expTree* tree) {
 				currentLeaf->setNumber(currentChar-48);
 			}
 		}
-		else {
+		else if(currentChar!=' ') {
 			if (currentChar == '(') {
 				currentLeaf->newLeftChild();
 				currentLeaf = currentLeaf->getLeftChild();
@@ -112,9 +112,11 @@ int main() {
 	expTree* a = new expTree;
 	char str[] = "( ( 5 + ( ( 1 + 2 ) * 4 ) ) - 3 )";
 	char str1[] = "(((((12 * 2) / 2) + 15) * 6) + 66)";
-	char str2 [] = "(((((122 * 2) / 2) + 15) * 6) + 66)";
-	auto input = regex_replace(str2, std::regex("\\s"), "");
-	makeTree(input, a);
+	string str2 = "(((((122 * 2) / 2) + 15) * 6) + 66)";
+        string r = "";
+        //regex regx("\\s");
+	//auto input = regex_replace(str2, regx ,r);
+	makeTree(str2, a);
 	queue<int>* Q = new queue<int>;
 	postfix(a, Q);
 	int result = evaulate(Q);

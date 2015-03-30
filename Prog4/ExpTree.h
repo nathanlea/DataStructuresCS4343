@@ -21,6 +21,6 @@ public:
 	void clearChildren();
 	void setLeftChild(expTree* tree);
 	void setRightChild(expTree* tree);
-	void expTree::newLeftChild();
-	void expTree::newRightChild();
+        void newLeftChild();
+	void newRightChild();
 };
