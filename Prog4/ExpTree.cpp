@@ -26,7 +26,7 @@ expTree* expTree::getRightChild() {
 void expTree::getParent(expTree* par) {
 	parent = par;
 }
-expTree* expTree::getParent() {
+expTree* expTree::setParent() {
 	return parent;
 }
 void expTree::setNumber(int input) {

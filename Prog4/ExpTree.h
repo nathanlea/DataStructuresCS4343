@@ -13,7 +13,7 @@ public:
 	expTree* getLeftChild();
 	expTree* getRightChild();
 	void getParent(expTree* par);
-	expTree* getParent();
+	expTree* setParent();
 	void setValue(char input);
 	char getValue();
 	void setNumber(int input);
