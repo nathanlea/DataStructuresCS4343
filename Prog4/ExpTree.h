@@ -12,8 +12,8 @@ public:
 	bool num = false;
 	expTree* getLeftChild();
 	expTree* getRightChild();
-	void getParent(expTree* par);
-	expTree* setParent();
+	void setParent(expTree* par);
+	expTree* getParent();
 	void setValue(char input);
 	char getValue();
 	void setNumber(int input);
