@@ -64,8 +64,7 @@ void makeTree(string input, expTree* tree) {
 void postfix(expTree* tree, queue<int>* posFixQ) {
 	if (!tree->hasLeft && !tree->hasRight) {
 		if (tree->num) { posFixQ->push(tree->getNumber());	}
-		else {	posFixQ->push(INT_MIN + tree->getValue());	}		
-		//cout << tree->getValue()<< " ";
+		else {	posFixQ->push(INT_MIN + tree->getValue());	}	
 		return;
 	}
 	postfix(tree->getLeftChild(), posFixQ);
@@ -87,7 +86,7 @@ int evaulate(queue<int>* Q) {
 			S->pop();
 			int b = S->top();
 			S->pop();
-			result = calculate(a, b, q);
+			result = calculate(a, b, q1);
 			S->push(result);
 		}
 		else {
