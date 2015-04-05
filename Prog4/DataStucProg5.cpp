@@ -25,77 +25,84 @@ int calculate(int a, int b, char q);
 int expressionTree(string str);
 
 /****************************************************************
-* METHOD: 
-* PARAMS: 
-* RETURN: 
+* METHOD: makeTree
+* PARAMS: string input, expTree* tree
+* RETURN: void
 *
-* 
+* Take an expression and turns into an expression tree
 *
 ****************************************************************/
 void makeTree(string input, expTree* tree) {
 	expTree* currentLeaf = tree;
+	bool lastWasNum = false; //Adds support for multi-digit numbers
 	for (unsigned int i = 0; i < input.size(); i++) {
-		char currentChar = input.at(i);
-		if (currentChar >= 48 && currentChar <= 57) {
-			if (currentLeaf->num) {
-				int a = currentLeaf->getNumber();
-				currentLeaf->setNumber(a * 10 + (currentChar - 48));
+		char currentChar = input.at(i); //Get the current char in the String
+		if (currentChar >= 48 && currentChar <= 57) { //If ascii value is numberical digit
+			if (lastWasNum) { //If the last char read in was a number do some math to get the correct mulitdigit number
+				int a = currentLeaf->getValue(); //Get the last int read in
+				currentLeaf->setValue(a * 10 + (currentChar - 48)); //Multiply that number by 10 and add the current number
 			}
-			else { //default normal case
-				currentLeaf->num = true;
-				currentLeaf->setNumber(currentChar-48);
+			else { //Normal case new integer case
+				lastWasNum = true; //Set reading an int to true
+				currentLeaf->setValue(currentChar-48); //Set the int value of the char to the currentLeaf
 			}
 		}
-		else if(currentChar !=' ') {
-			if (currentChar == '(') {
-				currentLeaf->newLeftChild();
-				currentLeaf = currentLeaf->getLeftChild();
+		else if(currentChar !=' ') { //If space ignore
+			if (currentChar == '(') { //If '(' go one level deeper
+				lastWasNum = false; //Not number
+				currentLeaf->newLeftChild(); //Make new left Child
+				currentLeaf = currentLeaf->getLeftChild(); //Set that left child to currentLeaf
 			}
-			else if (currentChar == ')') {
-				currentLeaf = currentLeaf->getParent();
+			else if (currentChar == ')') { // If ')' go one level up
+				lastWasNum = false; //Not number
+				currentLeaf = currentLeaf->getParent(); // Get the parent of the currentLeaf to go up one level
 			}
-			else if (currentChar == '+' || currentChar == '-' || currentChar == '*' || currentChar == '/') {
-				currentLeaf = currentLeaf->getParent();
-				currentLeaf->setValue(currentChar);
-				currentLeaf->newRightChild();
-				currentLeaf = currentLeaf->getRightChild();
+			else if (currentChar == '+' || currentChar == '-' || currentChar == '*' || currentChar == '/') { //If operator
+				currentLeaf = currentLeaf->getParent(); //Get parent
+				currentLeaf->setValue(-1 * currentChar); //Negate the asci value of the currentChar sine negative aren't possible
+				currentLeaf->newRightChild(); //Get ready for next input, get the right child
+				currentLeaf = currentLeaf->getRightChild(); //Set the right to the currentLeaf
+				lastWasNum = false; //Not number
 			}
 			else {
 				//any other case
 				cout << "Unsupported Character, please enter a correct string. \n(Supported operations +, -, *, /)" << endl;
+				return;
 			}
 		}
 	}
-	tree = currentLeaf;
+	tree = currentLeaf; //set the created tree to the passed in one
 
 }
 
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: posfix
+* PARAMS: expTree* tree, queue<int>* posFixQ
+* RETURN: void
 *
-*
+* Traverses the tree and places the elements with posfix traversal
+* into the queue
 *
 ****************************************************************/
 void postfix(expTree* tree, queue<int>* posFixQ) {
-	if (!tree->hasLeft && !tree->hasRight) {
-		if (tree->num) { posFixQ->push(tree->getNumber());	}
-		else {	posFixQ->push(-1 * tree->getValue());	}	
+	if (!tree->hasLeft && !tree->hasRight) { //If no parents
+		posFixQ->push(tree->getValue());//Push value to queue
 		return;
 	}
-	postfix(tree->getLeftChild(), posFixQ);
-	postfix(tree->getRightChild(), posFixQ);
-	if (tree->num) { posFixQ->push(tree->getNumber());	}
-	else {	posFixQ->push(-1 * tree->getValue());	}
+	postfix(tree->getLeftChild(), posFixQ); //Recure Left
+	postfix(tree->getRightChild(), posFixQ); //Recure Right
+	posFixQ->push(tree->getValue()); //Once visited childs then push value
 }
 
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: evaluate
+* PARAMS: queue<int>* Q
+* RETURN: int
 *
-*
+* Takes the postfix traversal and places elements into the stack 
+* until reaches a non number then pulls two elements out does 
+* the operation and puts back in stack, return the evauluation 
+* of the expTree
 *
 ****************************************************************/
 int evaulate(queue<int>* Q) {
@@ -103,47 +110,46 @@ int evaulate(queue<int>* Q) {
 	stack<int>* S = new stack<int>;
 	int size = Q->size();
 	for (int i = 0; i < size; i++) {
-		int q = Q->front();
-		Q->pop();
-		int q1 = q * -1;
-		if (q1 == '+' || q1 == '-' || q1 == '*' || q1 == '/') {
-			int a = S->top();
-			S->pop();
-			int b = S->top();
-			S->pop();
-			result = calculate(a, b, q1);
-			S->push(result);
+		int q = Q->front(); Q->pop();//Get and pop the front element of the queue		
+		int q1 = q * -1; //negate to see if operator, if q1 is positive then is operator
+		if (q1 > 0) { //If operator, operate
+			int a = S->top(); S->pop(); //Get and pop element
+			int b = S->top(); S->pop(); //Get and pop element
+			result = calculate(a, b, q1); //Caluculate result from 2 elements and operand
+			S->push(result); //push result to stacks
 		}
-		else {
-			S->push(q);
+		else { //If number push to stack
+			S->push(q); //Push number to stack
 		}
 	}
-	return S->top();
+	return S->top(); //return value of function
 }
 
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: calculate
+* PARAMS: int b, int a, char q
+* RETURN: int
 *
-*
+* Simple operator class, find what operator to use does the 
+* calculation and returns
 *
 ****************************************************************/
 int calculate(int b, int a, char q) {
-	if (q == '+'){		return a + b; }
-	else if (q == '-') {return a - b; }
-	else if (q == '*'){ return a * b; }
-	else if (q == '/'){ return a / b; }
+	if		(q == '+') { return a + b; }
+	else if (q == '-') { return a - b; }
+	else if (q == '*') { return a * b; }
+	else if (q == '/') { return a / b; }
 	else {  }
 	return -1;
 }
 
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: expressionTree
+* PARAMS: string str
+* RETURN: int
 *
-*
+* Helper class for main, calls the 3 methods to correct make and
+* evaulate the tree, returns the calculated expression
 *
 ****************************************************************/
 int expressionTree(string str) {

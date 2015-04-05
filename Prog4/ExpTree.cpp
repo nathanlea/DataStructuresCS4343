@@ -16,99 +16,77 @@
 using namespace std;
 
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: getLeftChild
+* PARAMS: void
+* RETURN: expTree*
 *
-*
+* returns the leftChild of the current node
 *
 ****************************************************************/
 expTree* expTree::getLeftChild() {
 	return leftChild;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: getRightChild
+* PARAMS: void
+* RETURN: expTree*
 *
-*
+* returns the rightChild of the current node
 *
 ****************************************************************/
 expTree* expTree::getRightChild() {
 	return rightChild;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: getParent
+* PARAMS: expTree* par
+* RETURN: void
 *
-*
+* sets the parent of the current node
 *
 ****************************************************************/
 void expTree::setParent(expTree* par) {
 	parent = par;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: getParent
+* PARAMS: void
+* RETURN: expTree*
 *
-*
+* returns the parent of the current node
 *
 ****************************************************************/
 expTree* expTree::getParent() {
 	return parent;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: setValue
+* PARAMS: int input
+* RETURN: void
 *
-*
-*
-****************************************************************/
-void expTree::setNumber(int input) {
-	number = input;
-}
-/****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
-*
-*
+* set the value of the node
 *
 ****************************************************************/
-int expTree::getNumber(){
-	return number;
-}
-/****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
-*
-*
-*
-****************************************************************/
-void expTree::setValue(char input) {
+void expTree::setValue(int input) {
 	value = input;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: getValue
+* PARAMS: void
+* RETURN: int
 *
-*
+* return the value of the node
 *
 ****************************************************************/
-char expTree::getValue(){
+int expTree::getValue(){
 	return value;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: clearChildren
+* PARAMS: void
+* RETURN: void
 *
-*
+* clears the child of the current node
 *
 ****************************************************************/
 void expTree::clearChildren(){
@@ -116,11 +94,11 @@ void expTree::clearChildren(){
 	hasLeft = false; hasRight = false;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: setLeftChild
+* PARAMS: expTree*
+* RETURN: void
 *
-*
+* sets the left child of the current node
 *
 ****************************************************************/
 void expTree::setLeftChild(expTree* tree) {
@@ -128,11 +106,11 @@ void expTree::setLeftChild(expTree* tree) {
 	hasLeft = true;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: setRightChild
+* PARAMS: expTree*
+* RETURN: void
 *
-*
+* sets the rightChild of the current node
 *
 ****************************************************************/
 void expTree::setRightChild(expTree* tree) {
@@ -140,11 +118,11 @@ void expTree::setRightChild(expTree* tree) {
 	hasRight = true;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: newLeftChild
+* PARAMS: void
+* RETURN: void
 *
-*
+* Creates a new leaf and sets it to the leftChild of the current Node
 *
 ****************************************************************/
 void expTree::newLeftChild() {
@@ -153,11 +131,11 @@ void expTree::newLeftChild() {
 	hasLeft = true;
 }
 /****************************************************************
-* METHOD:
-* PARAMS:
-* RETURN:
+* METHOD: newRightChild
+* PARAMS: void
+* RETURN: void
 *
-*
+* Creates a new leaf and sets it to the rightChild of the curret Node
 *
 ****************************************************************/
 void expTree::newRightChild() {

@@ -4,8 +4,7 @@ class expTree {
 	expTree* parent = NULL;
 	expTree* leftChild = NULL;
 	expTree* rightChild = NULL;
-	char value = '?';
-	int number = 0;
+	int value = 0;
 public:
 	bool hasLeft = false;
 	bool hasRight = false;
@@ -14,10 +13,8 @@ public:
 	expTree* getRightChild();
 	void setParent(expTree* par);
 	expTree* getParent();
-	void setValue(char input);
-	char getValue();
-	void setNumber(int input);
-	int getNumber();
+	void setValue(int input);
+	int getValue();
 	void clearChildren();
 	void setLeftChild(expTree* tree);
 	void setRightChild(expTree* tree);
