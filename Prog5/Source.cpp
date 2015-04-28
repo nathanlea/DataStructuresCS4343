@@ -27,9 +27,9 @@ void swap(int x, int y, graph* arr[]) {
 	arr[y] = temp;
 }
 
-void getDist(graph* arr[]) {
+void getDist(graph* arr[], int size) {
 	float max = 0;
-	for (int i = 0; i < (5-1); i++) {
+	for (int i = 0; i < (size - 1); i++) {
 		max += arr[i]->distanceBetween(arr[i+1]);
 	}
 	if (max>MAX_DIST){
@@ -48,7 +48,7 @@ void permute(int k, int size, graph* arr[]){
 	int i;
 
 	if (k == 0)
-		getDist(arr);
+		getDist(arr, size);
 		//compare distances
 	else {
 		for (i = k - 1; i >= 0; i--){
@@ -88,7 +88,7 @@ int main() {
 
 	permute(10, 10, POINTS);
 
-	cout << "Make dist = " << MAX_DIST;
+	cout << "Max dist = " << MAX_DIST << endl;
 
 /*
 	cout << "Distance between a & c";
