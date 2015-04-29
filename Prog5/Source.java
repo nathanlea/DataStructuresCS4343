@@ -8,16 +8,6 @@ public class Source
 {
     // instance variables - replace the example below with your own
     public static void main(String args[]) {
-        //
-        //make some vectors 
-        //Get 10 random points to find the longest path...
-        /*graph* POINTS [10];
-        for (int i = 0; i < 10; i++) {
-        int r1 = rand();
-        int r2 = rand();
-        POINTS[i] = new graph(r1, r2);
-        }*/
-
         //Five points to use for testing
         //1, 4
         //6, 2
@@ -26,13 +16,27 @@ public class Source
         //8, 7
         Graph pointField = new Graph();
 
-        Vert a = pointField.addVector(1, 1);
-        Vert b = pointField.addVector(2, 2);
-        Vert c = pointField.addVector(3, 3);
-        Vert d = pointField.addVector(4, 4);
-
-        System.out.println("" + a.u);
-        System.out.println("" + d.v);
+        Vert _11 = pointField.addVector(1, 1);
+        Vert _5  = pointField.addVector(2, 2);
+        Vert _2  = pointField.addVector(3, 3);
+        Vert _7  = pointField.addVector(4, 4);
+        Vert _9  = pointField.addVector(5, 5);
+        Vert _8  = pointField.addVector(6, 6);
+        Vert _3  = pointField.addVector(7, 7);
+        Vert _10 = pointField.addVector(8, 8);
+        
+        
+        _5.neighbors.add(_11);
+        _11.neighbors.add(_2);
+        _11.neighbors.add(_10);
+        _11.neighbors.add(_9);
+        _7.neighbors.add(_11);
+        _7.neighbors.add(_8);
+        _3.neighbors.add(_8);
+        _3.neighbors.add(_10);
+        _3.neighbors.add(_9);
+        
+        
 
         //cout << a->
         //graph* perms[5] = { a, b, c, d, e };
