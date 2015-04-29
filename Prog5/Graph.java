@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 /**
  * Write a description of class Graph here.
  * 
@@ -7,41 +7,66 @@ import java.util.ArrayList;
  */
 public class Graph
 {
-    // instance variables - replace the example below with your own
-    int u = 5;
-    int v = 10;
-    ArrayList points;
+    ArrayList<Point> vertices = new ArrayList<Point>();
+    ArrayList<ArrayList<Integer>> map = new ArrayList<ArrayList<Integer>>();
+    Map<Integer,ArrayList<Point>> multiMap = new HashMap<Integer,ArrayList<Point>>();
+    public void Graph() {
+        
+    }
 
-    /**
-     * Constructor for objects of class Graph
-     */
-    public Graph()
-    {
-        // initialise instance variables
-        points = new ArrayList<Vert>();
-    }   
-    //Set Vector
-    void setNeighbor(Vert a, Vert b) {
-        (a.neighbors).add(b);
-    }
-    Vert getVert(int x, int y) {
-        for (int i = 0; i < points.size(); i++) {
-            Vert curr = (Vert)points.get(i);
-            if (x == curr.u && y == curr.v) {
-                return curr;
+    public Point addVertex(int u, int v) {
+        Point p = new Point();
+        p.u = u; //Starting point
+        p.v = v; //Ending point
+        vertices.add(p);
+        try {
+            map.get(u).add(v);
+        } catch (Exception e) {
+            for(int i=0;i<=u;i++) {
+                map.add(new ArrayList<Integer>());
             }
-            else return null;
+            map.get(u).add(v);
         }
-        return null;
+        
+        return p;
     }
-    Vert addVector(int x, int y) {
-        Vert newVert =  new Vert(x,y);
-        points.add(newVert);
-        return newVert;
+    
+    public String longestPath(int s, int t) {
+        String path = "";
+        if(s==t) {
+            return (s+"");
+        }
+        for(int i=0;i<map.get(s).size();i++) {
+            int temp = map.get(s).get(i);
+            path = path + longestPath(temp, t);
+        }   
+        return path;
     }
-    void setCoords(int x, int y) {
-        //vector* g = new vector();
-        u = x;
-        v = y;
+
+    public ArrayList<Integer> getEdgesFrom(int u) {
+        return map.get(u);
     }
+
+    public String toString() {
+        for(int i = 0, x = 0 ; i < map.size(); x++) {
+            if(x == i) {                
+                for(int j = 0,y = 0 ; j < map.get(i).size(); y++){
+                    if(y==map.get(i).get(j)) {
+                        System.out.print(" 1 ");
+                        j++;
+                    } else {
+                        System.out.print(" 0 ");
+                    }
+                }
+                System.out.println("");
+                i++;
+            }
+            
+            else {
+                System.out.println("X");
+            }
+        }
+        return "";
+    }
+
 }
