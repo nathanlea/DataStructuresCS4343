@@ -21,8 +21,8 @@ public class TestingClass
         g.addVertex(4,5);
         
         g.toString();
-        
-        System.out.println(g.longestPath(0,5));
+        String r = "0";
+        System.out.println(g.longestPath(0,5, r));
     }
     
     public static void Main(String args[]) {
