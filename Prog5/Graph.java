@@ -7,18 +7,12 @@ import java.util.*;
  */
 public class Graph
 {
-    ArrayList<Point> vertices = new ArrayList<Point>();
     ArrayList<ArrayList<Integer>> map = new ArrayList<ArrayList<Integer>>();
-    Map<Integer,ArrayList<Point>> multiMap = new HashMap<Integer,ArrayList<Point>>();
     public void Graph() {
         
     }
 
-    public Point addVertex(int u, int v) {
-        Point p = new Point();
-        p.u = u; //Starting point
-        p.v = v; //Ending point
-        vertices.add(p);
+    public void addVertex(int u, int v) {
         try {
             map.get(u).add(v);
         } catch (Exception e) {
@@ -27,8 +21,6 @@ public class Graph
             }
             map.get(u).add(v);
         }
-        
-        return p;
     }
     
     public String longestPath(int s, int t) {
@@ -38,7 +30,7 @@ public class Graph
         }
         for(int i=0;i<map.get(s).size();i++) {
             int temp = map.get(s).get(i);
-            path = path + longestPath(temp, t);
+            path = path + temp + longestPath(temp, t);
         }   
         return path;
     }
@@ -68,5 +60,4 @@ public class Graph
         }
         return "";
     }
-
 }
