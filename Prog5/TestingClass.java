@@ -94,7 +94,7 @@ public class TestingClass
         System.out.println();
     }
 
-    public static void Main(String[] args) {
+    public static void main(String[] args) {
         new TestingClass();        
     }
 }
