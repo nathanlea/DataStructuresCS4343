@@ -11,7 +11,7 @@ public class Graph
     ArrayList<ArrayList<String>> path = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> lookup = new ArrayList<ArrayList<String>>();
     public void Graph() {
-        
+
     }
 
     public void addVertex(int u, int v) {
@@ -20,12 +20,12 @@ public class Graph
         } catch (Exception e) {
             for(int i=0;i<=u;i++) {
                 map.add(new ArrayList<Integer>());
-                path.add(new ArrayList<String>());
+                //path.add(new ArrayList<String>());
             }
             map.get(u).add(v);
         }
     }
-    
+
     public String longestPath(int s, int t, String r) {
         ArrayList<Integer> h = map.get(s);
         int i = 0;
@@ -43,7 +43,7 @@ public class Graph
                     return (r + ", " + t );
                 }
                 else {
-                    r += ", " + Integer.toString(h.get(i));
+                    r += ", "+ Integer.toString(h.get(i));
                     int temp = h.get(i);
                     addPath(s,temp,r);
                     longestPath(h.get(i), t, r);
@@ -54,45 +54,52 @@ public class Graph
             return lookUp(s,t);
         }
     }
-    
+
     public void addPath(int s, int t, String r) {
+        int a = r.charAt(0)-48;
+        int b = r.charAt(r.length()-1)-48;
+        if(r.length()<1) return;
         try {
-            if(lookup.get(s).get(t).length() < r.length()) {
-                lookup.get(s).set(t,r);
+            if(lookup.get(a).get(b).length() < r.length()) {
+                lookup.get(a).set(b,r);
             } else {
                 return;
             }            
         }catch(Exception e) {
-            for(int i=0;i<=s;i++) {
+            for(int i=0;i<=a;i++) {
                 lookup.add(new ArrayList<String>());
             }
-            lookup.get(s).set(t,r);
+            for(int i=0;i<=t;i++) {
+                lookup.get(a).add(new String());
+            }
+            lookup.get(a).set(b,r);
         }
     }
-    
+
     public String lookUp(int s, int t) {
         try {
-            String h = lookup.get(s).get(t);
-            int i = 0;
-            int l = 0;            
-            int max = 0;
-            while(i < h.length() ) {
-                //Going to have to change
-                if(h.length()>l) {
-                    max=i;
-                    l = h.length();
-                    i++;
-                }
-                else {
-                    h.remove(i);
+            ArrayList<String> h = lookup.get(s);
+            for(int i =0;i<h.size();i++){
+                String[] possPath = h.get(i).split(", ");
+                if(possPath.length>1) { 
+                    if(Integer.parseInt(possPath[0].trim()) == s) {
+                        if(Integer.parseInt(possPath[possPath.length-1].trim()) == t) {
+                            String ret = "";
+                            for(int j = 0; j<possPath.length;j++) {
+                                ret += possPath[j];
+                                if(!(j+2>possPath.length)) ret+= ", ";
+                            }
+                            return ret;
+                        }
+                    }
                 }
             }
-            return h.get(max);
+            return null;
         }catch(Exception e) {
             return null;
         }
     }
-    
+
     public ArrayList<Integer> getEdgesFrom(int u) {
         return map.get(u);
     }
@@ -111,7 +118,7 @@ public class Graph
                 System.out.println("");
                 i++;
             }
-            
+
             else {
                 System.out.println("X");
             }
